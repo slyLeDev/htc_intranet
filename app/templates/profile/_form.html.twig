@@ -1,0 +1,73 @@
+{% from 'macro/macro_custom_radio_render.html.twig' import custom_radio_render_inline %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <!-- Basic Card Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-6 d-flex align-items-center">
+                        <h5 class="m-0 font-weight-bold text-primary">
+                            {{ is_new ? 'Nouveau' : 'Modifier un' }} profile
+                            <span class="badge badge-primary" style="font-size: 18px;">#{{ the_id }}</span>
+                        </h5>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-primary float-right" href="{{ path('htcintranet_admin_profile_list') }}">
+                            <i class="fa fa-backward mr-2"></i>
+                            Revenir à la liste des profiles
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{ form_start(form, {'attr': {'id': 'form_profile'}}) }}
+            <div class="card-body">
+                <div class="row">
+                    {% include 'flash_message/index.html.twig' %}
+                    <!--div class="col-lg-5 d-none d-lg-block bg-deal-image"-->
+
+                    <div class="col-5 p-5">
+
+                    </div>
+                    <div class="col-7 p-5">
+
+                        {% if not is_new and profile.cvFilename %}
+                            <a href="{{ base_path_profile_file~'/'~profile.cvFilename }}" data-filename="{{ profile.cvFilename }}" id="download-profile-cv" class="btn btn-secondary">
+                                <i class="fa fa-download"></i>
+                                Télécharger
+                            </a>
+                            <a href="#" class="js-show-profile-cv-file btn btn-warning" title="Aperçu du CV"
+                               data-bs-toggle="modal" data-bs-target="#modal-profile-file" style="color: darkred;">
+                                <i class="fa fa-eye"></i>
+                                Voir
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                    <div class="col-2">
+                        <a class="btn btn-secondary float-right" href="{{ path('htcintranet_admin_profile_list') }}">
+                            <i class="fa fa-backward mr-2"></i>
+                            Liste des profiles
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-primary btn-user btn-block">
+                            <i class="fa fa-save mr-2"></i>
+                            {{ is_new ? 'Créer' : 'Modifier' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {{ form_widget(form._token) }}
+            {{ form_end(form, {render_rest: false}) }}
+        </div>
+    </div>
+</div>
+
+
+{% if not is_new and profile.cvFilename and is_viewable_file %}
+    {% include 'profile/modal_profile_cv_view_file.html.twig' %}
+{% endif %}

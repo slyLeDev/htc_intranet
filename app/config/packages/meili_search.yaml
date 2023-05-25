@@ -1,0 +1,12 @@
+meili_search:
+    url: '%env(MEILISEARCH_URL)%'          # URL of the Meilisearch server (mandatory)
+    api_key: '%env(MEILISEARCH_API_KEY)%'  # API key to access the Meilisearch server (mandatory)
+    indices:
+      - name: profile
+        class: App\Entity\Profile
+        enable_serializer_groups: true
+        settings:
+          searchableAttributes: ['actuallyJobTitle', 'yearOfExperience', 'sectors', 'email', 'fullName', 'locality', 'fullAddress', 'phone']
+          filterableAttributes: ['xpYear', 'sectors', 'status', 'neededInformationIsComplete', 'receivedAt']
+          sortableAttributes: ['xpYear', 'fullName', 'receivedAt']
+          rankingRules: ["exactness", "words", "typo", "proximity", "attribute", "sort"]

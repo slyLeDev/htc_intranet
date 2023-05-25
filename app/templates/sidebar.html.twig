@@ -1,0 +1,156 @@
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('htcintranet_admin_dashboard') }}">
+        <!--div class="sidebar-brand-icon "-->
+        <!--div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div-->
+        <div class="sidebar-brand-text mx-3">
+            HTC <sup>Intranet v1.0</sup>
+        </div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path('htcintranet_admin_dashboard') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    {% if is_granted("ROLE_SUPER_ADMIN") %}
+        <!-- Divider -->
+        <!--hr class="sidebar-divider"-->
+
+        <!-- Heading -->
+        <!--div class="sidebar-heading">
+            Gestion
+        </div-->
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item active">
+            <a class="nav-link" href="#" data-bs-toggle="collapse" data-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="true"
+               aria-controls="collapsePages">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Utilisateurs</span>
+            </a>
+            <div id="collapseUsers" class="collapse show" aria-labelledby="headingPages"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {{ consultant_list_active is defined ? 'active' : '' }}" href="{{ path('htcintranet_user_index') }}">
+                        <i class="fa fa-user-check mr-2"></i>
+                        Consulant
+                    </a>
+                    <a class="collapse-item {{ admin_list_active is defined ? 'active' : '' }}" href="{{ path('htcintranet_user_index_su') }}">
+                        <i class="fa fa-user-lock mr-2"></i>
+                        Administrateur
+                    </a>
+                </div>
+            </div>
+        </li>
+    {% endif %}
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item active">
+        <a class="nav-link" href="#" data-bs-toggle="collapse" data-toggle="collapse" data-bs-target="#collapseProfile" aria-expanded="true"
+           aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Dossiers</span>
+        </a>
+        <div id="collapseProfile" class="collapse show" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {{ admin_list_job_sector is defined ? 'active' : '' }}" href="{{ path('htcintranet_job_sector_index') }}">
+                    <i class="fa fa-list mr-2"></i>
+                    Domaines d'emplois
+                </a>
+                <a class="collapse-item {{ admin_list_customer is defined ? 'active' : '' }}" href="{{ path('htcintranet_customer_index') }}">
+                    <i class="fa fa-contact-card mr-2"></i>
+                    Clients
+                </a>
+                <a class="collapse-item {{ admin_list_deal is defined ? 'active' : '' }}" href="{{ path('htcintranet_deal_index') }}">
+                    <i class="fa fa-bag-shopping mr-2"></i>
+                    Contrats clients
+                </a>
+                <a class="collapse-item {{ admin_list_profile_send is defined ? 'active' : '' }}" href="#">
+                    <i class="fa fa-send mr-2"></i>
+                    Lots envoyés
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item active">
+        <a class="nav-link" href="#" data-bs-toggle="collapse" data-toggle="collapse" data-bs-target="#collapseProfile" aria-expanded="true"
+           aria-controls="collapsePages">
+            <i class="fas fa-fw fa-person"></i>
+            <span>Profile</span>
+        </a>
+        <div id="collapseProfile" class="collapse show" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {{ admin_list_profile is defined ? 'active' : '' }}" href="{{ path('htcintranet_admin_profile_list') }}">
+                    <i class="fa fa-inbox mr-2"></i>
+                    Tous les profiles
+                </a>
+                <a class="collapse-item {{ admin_list_profile_to_complete is defined ? 'active' : '' }}" href="#">
+                    <i class="fa fa-question-circle mr-2"></i>
+                    Reçus / A completer
+                </a>
+                <a class="collapse-item {{ admin_list_profile_received is defined ? 'active' : '' }}" href="{{ path('htcintranet_admin_profile_received') }}">
+                    <i class="fa fa-handshake mr-2"></i>
+                    Reçus en entretien
+                </a>
+                <a class="collapse-item {{ admin_list_profile_send_to_customer is defined ? 'active' : '' }}" href="#">
+                    <i class="fa fa-paper-plane mr-2"></i>
+                    Envoyés aux clients
+                </a>
+                <a class="collapse-item {{ admin_list_profile_placed is defined ? 'active' : '' }}" href="#">
+                    <i class="fa fa-save mr-2"></i>
+                    Placés
+                </a>
+                <a class="collapse-item {{ admin_list_profile_to_complete is defined ? 'active' : '' }}" href="#">
+                    <i class="fa fa-warning mr-2"></i>
+                    Blacklist
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item active">
+        <a class="nav-link" href="#" data-bs-toggle="collapse" data-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="true"
+           aria-controls="collapsePages">
+            <i class="fas fa-fw fa-id-card"></i>
+            <span>Entretiens</span>
+        </a>
+        <div id="collapseUsers" class="collapse show" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {{ admin_list_interview_category is defined ? 'active' : '' }}" href="{{ path('htcintranet_interview_category_index') }}">
+                    <i class="fa fa-box-archive mr-2"></i>
+                    Catégories
+                </a>
+                <a class="collapse-item {{ admin_list_interviewed is defined ? 'active' : '' }}" href="{{ path('htcintranet_interview_index') }}">
+                    <i class="fa fa-calendar mr-2"></i>
+                    Liste / Plannification
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>
+<!-- End of Sidebar -->

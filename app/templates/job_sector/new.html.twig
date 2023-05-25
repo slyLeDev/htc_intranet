@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New JobSector{% endblock %}
+
+{% block body %}
+    <h1>Create new JobSector</h1>
+
+    {{ include('job_sector/_form.html.twig') }}
+
+    <a href="{{ path('htcintranet_job_sector_index') }}">back to list</a>
+{% endblock %}

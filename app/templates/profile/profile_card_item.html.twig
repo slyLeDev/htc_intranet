@@ -1,0 +1,57 @@
+{% for profile in profiles %}
+    <tr>
+        <td class="received-card-item-general-info">
+            <div class="row d-flex align-items-start">
+                <div class="col-2">
+                    <img class="img-profile rounded-circle ml-2 mr-3 img-fluid" width="30px" height="30px"
+                         alt="{{ profile.profilePhoto ? asset('uploads/profile_photo/'~profile.profilePhoto) : 'avatar'~profile.id}}"
+                         src="{{ profile.profilePhoto ?
+                         asset('uploads/profile_photo/'~profile.profilePhoto) :
+                         'https://ui-avatars.com/api/?rounded=true&background='~profile.getGenderBgColor()~'&color=f8f9fc&name='~profile.gender }}">
+                </div>
+                <div class="col-10">
+                    {{ profile.fullName }} <br> 
+                    <small class="text-gray-700">
+                        {{ profile.email }}
+                    </small> <br>
+                    {# <small style="font-size: 11px;">
+                        <i class="text-gray-500">Reçu le {{ profile.receivedAt ? profile.receivedAt|date('Y-m-d H:i:s') : '' }}</i>
+                    </small> #}
+                </div>
+            </div>
+        </td>
+        <td class="received-card-item-general-info">
+            <small class="font-weight-bold">{{ profile.actuallyJobTitle }}</small>
+        </td>
+        <td class="text-center received-card-item-general-info">
+            <small><strong>{{ profile.yearOfExperience }}</strong></small>
+        </td>
+        <td>
+            {# TODO #}
+        </td>
+        <td>
+            {% for sector in profile.sectors %}
+                <span class="badge badge-info mt-1" style="white-space: inherit !important;">{{ sector.name }}</span>
+            {% endfor %}
+        </td>
+        <td class="received-card-item-general-info">
+            <small>
+                {{ profile.fullAddress is not empty ? profile.fullAddress : profile.locality }}
+            </small>
+        </td>
+        <td class="text-center">
+            <a href="#" class="js-show-profile-sheet mr-2" title="Voir le profile" data-id="{{ profile.id }}"
+               data-bs-toggle="modal" data-bs-target="#modal-profile-sheet">
+                <i class="fa fa-eye text-success"></i>
+            </a>
+            <a href="{{ path('htcintranet_admin_profile_edit', {'id': profile.id}) }}" title="Modifier">
+                <i class="fa fa-edit"></i>
+            </a>
+        </td>
+    </tr>
+{% endfor %}
+{% if profiles|length == 0 %}
+    <tr>
+        <td colspan="7" class="text-center">Aucun résultat</td>
+    </tr>
+{% endif %}

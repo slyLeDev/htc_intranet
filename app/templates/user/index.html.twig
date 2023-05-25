@@ -1,0 +1,89 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}HTC Intranet | {{ su is not defined ? 'Liste des consultants' : 'Liste des administrateurs' }}{% endblock %}
+
+{% block inner_content %}
+    <!-- Page Heading -->
+
+    {% include 'flash_message/index.html.twig' %}
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="h3 m-0 font-weight-bold text-primary">{{ su is not defined ? 'Liste des consultants' : 'Liste des administrateurs' }}</h1>
+                </div>
+                <div class="col-6">
+                    {% if su is not defined %}
+                        <a class="btn btn-primary float-right" href="{{ path('htcintranet_user_new') }}">
+                            <i class="fa fa-plus mr-2"></i>
+                            Créer un consultant
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered tab-htc" id="dataTable">
+                    <thead class="bg-primary text-white">
+                    <tr>
+                        <!--th>Id</th-->
+                        <th>Nom complet</th>
+                        <th>Email</th>
+                        <th>Statut</th>
+                        <th>Créer le</th>
+                        <th>Dérnière connexion</th>
+                        {% if su is not defined %}
+                            <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <!--td>
+                                <span class="badge badge-info">
+                                    #{#{ user.id }#}
+                                </span>
+                            </td-->
+                            <td>
+                                <img class="img-profile rounded-circle ml-2 mr-3" width="30px" height="30px"
+                                     src="https://ui-avatars.com/api/?rounded=true&background=random&name={{ user.fullName|replace({' ' : '+'}) }}">
+                                {{ user.fullName }}
+                            </td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <span class="badge badge-{{ user.isEnable ? 'success' : 'danger' }}">{{ user.isEnable ? 'ACTIF' : 'INACTIF' }}</span>
+                            </td>
+                            <td>{{ user.createdAt ? user.createdAt|date('d/m/Y H:i:s') : '' }}</td>
+                            <td>
+                                {% if user.lastLoginAt %}
+                                    <span class="badge badge-info">
+                                        {{ user.lastLoginAt ? user.lastLoginAt|date('d/m/Y H:i:s') : '' }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                            {% if su is not defined %}
+                                <td>
+                                    <a href="{{ path('htcintranet_user_change_state', {'id': user.id}) }}" class="js-enable-disable-state ml-2" data-id="{{ user.id }}"
+                                       data-state="{{ user.isEnable ? '1' : '0' }}"
+                                       data-bs-toggle="modal" data-bs-target="#modal-state-confirmation" style="color: {{ user.isEnable ? 'Tomato' : 'green' }};">
+                                        <i class="fa {{ user.isEnable ? 'fa-power-off' : 'fa-check-circle' }}"></i>
+                                    </a>
+                                    <a href="{{ path('htcintranet_user_edit', {'id': user.id}) }}" class="ml-3">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'user/modal_state_confirmation.html.twig' %}
+{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('user') }}{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}HTC Intranet | Clients{% endblock %}
+
+{% block inner_content %}
+    <!-- Page Heading -->
+
+    {% include 'flash_message/index.html.twig' %}
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h5 class="m-0 font-weight-bold text-primary">Liste des clients</h5>
+                        </div>
+                        <div class="col-6">
+                            {% if not is_new %}
+                                <a class="btn btn-primary float-right" href="{{ path('htcintranet_customer_index') }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Créer
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered tab-htc" id="dataTable">
+                            <thead class="bg-primary text-white">
+                            <tr>
+                                <!--th>Id</th-->
+                                <th>Name</th>
+                                <th>Contrat(s)</th>
+                                <th>Manager</th>
+                                <th>Interlocuteur(s) principal</th>
+                                <th>Téléphone</th>
+                                <!--th>Domaine(s)</th-->
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for customer in customers %}
+                                <tr>
+                                    <td>
+                                        <img class="img-profile rounded-circle ml-2 mr-3" width="40px" height="40px"
+                                             src="{{ customer.logo ?
+                                                        asset('uploads/customer_logo/'~customer.logo) :
+                                                        'https://ui-avatars.com/api/?rounded=true&background=random&name='~customer.name|replace({' ' : '+'}) }}">
+                                        {{ customer.name }}
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-info">
+                                            {{ customer.countDeals() }} contrat{{ customer.countDeals() > 1 ? 's' : '' }}
+                                        </span>
+                                    </td>
+                                    <td>{{ customer.manager }}</td>
+                                    <td>{{ customer.interlocutor }}</td>
+                                    <td>{{ customer.phone }}</td>
+                                    <!--td>
+                                        {--% for jobSector in customer.sector|reverse %}
+                                            <small>
+                                                <span class="badge badge-secondary">
+                                                    {--{ jobSector.name }}
+                                                </span>
+                                            </small>
+                                        {--% endfor %--}
+                                    </td-->
+                                    <td>
+                                        <a href="" class="js-show-customer-sheet ml-2" title="Voir la fiche" data-id="{{ customer.id }}"
+                                           data-bs-toggle="modal" data-bs-target="#modal-customer-sheet" style="color: darkred;">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a href="{{ path('htcintranet_customer_index', {'id': customer.id}) }}" class="ml-3" title="Modifier">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">{{ is_new ? 'Créer' : 'Modifier' }} un client</h5>
+                </div>
+                <div class="card-body">
+                    {% include 'customer/_form.html.twig' with {'is_new': is_new} %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'customer/modal_customer_sheet.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}{{ encore_entry_script_tags('customer') }}{% endblock %}

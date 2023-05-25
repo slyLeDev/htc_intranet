@@ -1,0 +1,125 @@
+{% from 'macro/deal_deadline_render.html.twig' import deal_deadline_render %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-center align-items-center">
+            <img class="img-profile rounded-circle ml-2 mr-3" width="120px" height="120px"
+                 src="{{ deal.customer.logo ?
+                 asset('uploads/customer_logo/'~deal.customer.logo) :
+                 'https://ui-avatars.com/api/?rounded=true&background=random&name='~deal.customer.name|replace({' ' : '+'}) }}">
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <h3 class="m-0"><span class="font-weight-bold">({{ deal.getQuantityAsString() }}) {{ deal.jobName }}</span> <small>pour {{ deal.customer.name }}</small></h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Informations générales
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row m-3">
+                            <div class="col-4 font-weight-bold text-dark">Poste :</div>
+                            <div class="col-8">{{ deal.jobName }}</div>
+                        </div>
+                        <div class="row m-3">
+                            <div class="col-4 font-weight-bold text-dark">Deadline d'envoi :</div>
+                            <div class="col-8">
+                                {{ deal_deadline_render(deal) }}
+                            </div>
+                        </div>
+                        <div class="row m-3">
+                            <div class="col-4 font-weight-bold text-dark">Salaire :</div>
+                            <div class="col-8">{{ deal.getSalaryText() }}</div>
+                        </div>
+                        <div class="row m-3">
+                            <div class="col-4 font-weight-bold text-dark">Responsable(s) :</div>
+                            <div class="col-8">{{ deal.getConsultantResponsibleAsString() }}</div>
+                        </div>
+                        <div class="row m-3">
+                            <div class="col-4 font-weight-bold text-dark">Statut :</div>
+                            <div class="col-8">
+                                <span class="{{ deal.getStatutBadgeLabel() }}">{{ deal.getStatutText() }}</span>
+                            </div>
+                        </div>
+                        <div class="row m-3">
+                            <div class="col-4 font-weight-bold text-dark">Crée le :</div>
+                            <div class="col-8">
+                                <span class="badge badge-secondary">
+                                    {{ deal.createdAt ? deal.createdAt|date('d/m/Y H:i:s') : '' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row m-3">
+                            <div class="col-4 font-weight-bold text-dark">Mise à jour le :</div>
+                            <div class="col-8">
+                                <span class="badge badge-info">
+                                    {{ deal.updatedAt ? deal.updatedAt|date('d/m/Y H:i:s') : '' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Contrat <a href="{{ base_path_deal_viewerjs ~ viewable_filename }}" target="_blank" title="Ouvrir dans une autre onglet"><i class="fa fa-external-link ml-3"></i></a>
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {% if is_viewable_file %}
+                            <iframe src="{{ base_path_deal_viewerjs ~ viewable_filename }}" width='1024' height='600' allowfullscreen webkitallowfullscreen></iframe>
+                        {% else %}
+                            Contrat non uploadé.
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Remarque(s)
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body text-secondary">
+                        {{ deal.comment ? deal.comment : 'Aucune remarque' }}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Fiche de poste
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {% if deal.jobDescription %}
+                            {{ deal.jobDescription | raw }}
+                        {% else %}
+                            Pas encore remplie
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        Envois client
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        TODO
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

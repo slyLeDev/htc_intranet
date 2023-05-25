@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HTC Intranet{% endblock %}
+
+{% block body %}
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        {% include 'sidebar.html.twig' %}
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                {% include 'topbar.html.twig' %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    {% block inner_content %}{% endblock %}
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            {% include 'footer.html.twig' %}
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    {% include 'scroll_to_top.html.twig' %}
+
+    {% include 'logout_modal.html.twig' %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% macro custom_radio_render_inline(input, class = '', isRequired = false) %}
+    {% for option in input.children %}
+        <div class="form-check form-check-inline">
+            <input class="form-check-input mt-1 {{ class }}" type="radio" name="{{ option.vars.full_name }}" id="{{ option.vars.id }}"
+                    {% if option.vars.checked %} checked {% endif %} value="{{ option.vars.value }}" {{ isRequired and (loop.index == 1) ? 'required' : '' }}>
+            <label class="form-check-label" for="{{ option.vars.full_name }}">
+                {{ option.vars.label|trans }}
+            </label>
+        </div>
+    {% endfor %}
+
+    {{ form_errors(input) }}
+{% endmacro %}

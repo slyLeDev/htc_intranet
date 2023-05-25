@@ -1,0 +1,72 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}HTC Intranet | Gestion des catégories d'entretien{% endblock %}
+
+{% block inner_content %}
+    <!-- Page Heading -->
+
+    {% include 'flash_message/index.html.twig' %}
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h5 class="m-0 font-weight-bold text-primary">Liste des catégories d'entretien</h5>
+                        </div>
+                        <div class="col-6">
+                            {% if not is_new %}
+                                <a class="btn btn-primary float-right" href="{{ path('htcintranet_interview_category_index') }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Créer
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered tab-htc" id="dataTable">
+                            <thead class="bg-primary text-white">
+                            <tr>
+                                <th width="40%!important;">Catégorie</th>
+                                <th>Modifié par</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for itw_category in itw_categories %}
+                                <tr>
+                                    <td>{{ itw_category.name }}</td>
+                                    <td>{{ itw_category.updatedBy ? itw_category.updatedBy.fullName : 'Importation' }}</td>
+                                    <td>
+                                        <a href="{{ path('htcintranet_interview_category_index', {'id': itw_category.id}) }}" class="ml-3">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">{{ is_new ? 'Créer' : 'Modifier' }} une catégorie d'entretien</h5>
+                </div>
+                <div class="card-body">
+                    {% include 'interview/category/_form.html.twig' with {'is_new': is_new} %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}{{ encore_entry_script_tags('generic') }}{% endblock %}

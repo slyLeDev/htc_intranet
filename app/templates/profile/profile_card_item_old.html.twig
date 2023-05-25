@@ -1,0 +1,57 @@
+{% for row in profiles|batch(4) %}
+    <div class="row">
+        {% for profile in row %}
+            {% if profile is not empty %}
+                <div class="col-3 mb-4 jQueryEqualHeight">
+                    <div class="card shadow h-100 py-2">
+                        <div class="card-body text-center">
+                            <div class="received-card-item-general-info">
+                                <img class="img-profile rounded-circle ml-2 mr-3 img-fluid" style="width: 100px;"
+                                     alt="{{ profile.profilePhoto ? asset('uploads/profile_photo/'~profile.profilePhoto) : 'avatar'~profile.id}}"
+                                     src="{{ profile.profilePhoto ?
+                                     asset('uploads/profile_photo/'~profile.profilePhoto) :
+                                     'https://ui-avatars.com/api/?rounded=true&background=random&name='~profile.fullName|replace({' ' : '+'}) }}">
+                                <h5 class="my-3">
+                                    {{ profile.fullName is not empty ? profile.fullName : profile.email }}
+                                </h5>
+                                <p class="text-muted mb-1">{{ profile.actuallyJobTitle }}</p>
+                                {% if profile.phone is not empty %}
+                                    <p class="text-muted mb-1">{{ profile.phone }}</p>
+                                {% endif %}
+                                <p class="text-muted mb-2">{{ profile.fullAddress is not empty ? profile.fullAddress : profile.locality }}</p>
+                            </div>
+
+                            <div class="received-card-item-sector mt-2 mb-4">
+                                {% for sector in profile.sectors %}
+                                    <span class="badge badge-info mt-1" style="white-space: inherit !important;">{{ sector.name }}</span>
+                                {% endfor %}
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-4 mb-2 received-list-action">
+                                <a href="#" class="js-show-profile-sheet btn btn-outline-primary mr-2" title="Voir le profile" data-id="{{ profile.id }}"
+                                   data-bs-toggle="modal" data-bs-target="#modal-profile-sheet">
+                                    <i class="fa fa-eye"></i> Voir
+                                </a>
+                                <a href="{{ path('htcintranet_admin_profile_edit', {'id': profile.id}) }}" class="btn btn-primary" title="Modifier">
+                                    <i class="fa fa-edit"></i> Modifier
+                                </a>
+                            </div>
+
+                            <div class="position-absolute bottom-0 start-0 ml-2">
+                                <small style="font-size: 11px;">
+                                    <i class="text-gray-500">Reçu le {{ profile.receivedAt ? profile.receivedAt|date('Y-m-d H:i:s') : '' }}</i>
+                                </small>
+                            </div>
+
+                            {% if profile.gender is not empty %}
+                                <div class="position-absolute top-0 end-0">
+                                    <span class="badge rounded-circle badge-{{ profile.gender == 'M' ? 'primary' : 'success' }} mr-1">{{ profile.gender }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}

@@ -1,0 +1,50 @@
+<div class="p-2">
+    {% include 'flash_message/index.html.twig' %}
+
+    {{ form_start(form, {'attr': {'id': 'form_interview_event', 'action': path('htcintranet_interview_form_event')}}) }}
+    <!--div class="form-group">
+        {# { form_label(form.title) }}
+        {{ form_widget(form.title, {'attr' : {'class': 'form-control', 'placeholder' : 'Ajouter un titre'}}) }} #}
+    </div-->
+    <div class="form-group">
+        {{ form_label(form.profile) }}
+        {{ form_widget(form.profile, {'attr' : {'class': 'form-control form-select'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.category) }}
+        {{ form_widget(form.category, {'attr' : {'class': 'form-control form-select'}}) }}
+    </div>
+
+    <label for="">Créneau horaire :</label>
+    <div class="input-group mb-3">
+        {% set dateStart_value = interview and interview.dateStart is not empty ? interview.getDateStartFormatted() : '' %}
+        {% set dateEnd_value = interview and interview.dateEnd is not empty ? interview.getDateEndFormatted() : '' %}
+        <span class="input-group-text">De</span>
+        {{ form_widget(form.dateStart, {'attr' : {'class': 'form-control datepicker', 'placeholder': 'Heure et minute du début', 'value' : dateStart_value }}) }}
+        <span class="input-group-text">
+            <i class="fa fa-clock"></i>
+        </span>
+        {{ form_widget(form.hourStart, {'attr' : {'class': 'form-control', 'placeholder': '00:00'}}) }}
+        <span class="input-group-text"> à </span>
+        {{ form_widget(form.dateEnd, {'attr' : {'class': 'form-control datepicker', 'placeholder': 'Heure et minute de la fin', 'value' : dateEnd_value }}) }}
+        <span class="input-group-text">
+            <i class="fa fa-clock"></i>
+        </span>
+        {{ form_widget(form.hourEnd, {'attr' : {'class': 'form-control', 'placeholder': '00:00'}}) }}
+    </div>
+
+    <div class="row text-center mt-3">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <button class="btn btn-primary btn-user btn-block">
+                <i class="fa fa-save mr-2"></i>
+                {{ is_new ? 'Créer' : 'Modifier' }}
+            </button>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    {{ form_widget(form._token) }}
+    {#{ form_errors(form) }#}
+    {{ form_end(form, {render_rest: false}) }}
+</div>

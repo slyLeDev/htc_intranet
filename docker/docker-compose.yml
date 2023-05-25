@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+
+  # Symfony
+  app:
+    build:
+      context: ./php-apache
+      dockerfile: Dockerfile
+    image: htc-intranet-app
+    container_name: htc-intranet-app
+    ports:
+      - "10001:80"
+    volumes:
+      - "../app/:/var/www/html"
+      - "./php-apache/apacheHost.conf:/etc/apache2/sites-available/000-default.conf"
+      - "./php-apache/php.ini:/usr/local/etc/php/php.ini"
+    depends_on:
+      - mysql
+      - meilisearch
+    environment:
+      DATABASE_URL: mysql://${MYSQL_DATABASE_USER}:${MYSQL_DATABASE_PASSWORD}@mysql/${MYSQL_DATABASE_NAME}
+      MEILISEARCH_HTTP_ADDR: http://meilisearch:7700
+      MEILISEARCH_URL: http://meilisearch:7700
+      MEILISEARCH_API_KEY: ${MEILISEARCH_MASTER_KEY:-masterKey}
+    links:
+      - meilisearch
+    networks:
+      - htc-app-network
+    restart: always
+
+  # MeiliSearch
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: htc-intranet-meilisearch
+    ports:
+      - "7709:7700"
+    environment:
+      - http_proxy
+      - https_proxy
+      - MEILI_MASTER_KEY=${MEILISEARCH_MASTER_KEY:-masterKey}
+      - MEILI_NO_ANALYTICS=${MEILISEARCH_NO_ANALYTICS:-true}
+      - MEILI_ENV=${MEILISEARCH_ENV:-development}
+      - MEILI_LOG_LEVEL
+      - MEILI_DB_PATH=${MEILISEARCH_DB_PATH:-/htc-intranet/data.ms}
+    volumes:
+      - "./meilisearch/data.ms:/htc-intranet/data.ms"
+    networks:
+      - htc-app-network
+    restart: always
+
+  # MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: htc-intranet-mysql
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_DATABASE_ROOT_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_NAME}
+      MYSQL_USER: ${MYSQL_DATABASE_USER}
+      MYSQL_PASSWORD: ${MYSQL_DATABASE_PASSWORD}
+    command:
+      --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    volumes:
+      - "./mysql/data:/var/lib/mysql"
+    networks:
+      - htc-app-network
+    restart: always
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: htc-intranet-phpmyadmin
+    ports:
+      - "8089:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_DATABASE_ROOT_USER}
+    networks:
+      - htc-app-network
+    restart: always
+
+  maildev:
+    image: maildev/maildev
+    container_name: htc-intranet-maildev
+    restart: always
+    environment:
+      - TZ=Europe/Paris
+      - MAILDEV_WEB_PORT=1080
+      - MAILDEV_SMTP_PORT=1025
+    ports:
+      - "8086:1080"
+      - "8028:1025"
+
+networks:
+  htc-app-network:
+    driver: bridge

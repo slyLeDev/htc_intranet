@@ -1,0 +1,87 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-center align-items-center">
+            <img class="img-profile rounded-circle ml-2 mr-3" width="120px" height="120px"
+                 src="{{ customer.logo ?
+                 asset('uploads/customer_logo/'~customer.logo) :
+                 'https://ui-avatars.com/api/?rounded=true&background=random&name='~customer.name|replace({' ' : '+'}) }}">
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <h3 class="m-0 font-weight-bold">{{ customer.name }}</h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Gérant :</div>
+            <div class="col-8">{{ customer.manager }}</div>
+        </div>
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Intérlocuteur(s) :</div>
+            <div class="col-8">{{ customer.interlocutor }}</div>
+        </div>
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Téléphone de(s) intérlocuteur(s) :</div>
+            <div class="col-8">{{ customer.phone }}</div>
+        </div>
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Adresse :</div>
+            <div class="col-8">{{ customer.locality }}</div>
+        </div>
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Domaine :</div>
+            <div class="col-8">{{ customer.sectorAsString }}</div>
+        </div>
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Site web :</div>
+            <div class="col-8">
+                {% if customer.website %}
+                    <a href="{{ customer.website }}">{{ customer.website }}</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Crée le :</div>
+            <div class="col-8">
+                <span class="badge badge-secondary">
+                    {{ customer.createdAt ? customer.createdAt|date('d/m/Y') : '' }}
+                </span>
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Mise à jour le :</div>
+            <div class="col-8">
+                <span class="badge badge-info">
+                    {{ customer.updatedAt ? customer.updatedAt|date('d/m/Y') : '' }}
+                </span>
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col-4 font-weight-bold text-dark">Listes des contrats :</div>
+            <div class="col-8">
+                <ul>
+                    {% for deal in customer.deals %}
+                        <li>
+                            <div class="row">
+                                <div class="col-5">
+                                    <strong>({{ deal.getQuantityAsString() }})</strong>
+                                    {{ deal.jobName }}
+                                </div>
+                                <div class="col-3">
+                                    <small class="badge badge-secondary">
+                                        <strong>#{{ deal.getReference() }}</strong>
+                                    </small>
+                                </div>
+                                <div class="col-2">
+                                    <span class="{{ deal.getStatutBadgeLabel() }}">
+                                        {{ deal.getStatutText() }}
+                                    </span>
+                                </div>
+                                <div class="col-2"></div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

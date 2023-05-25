@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile index{% endblock %}
+
+{% block body %}
+    <h1>Profile index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>ReceivedAt</th>
+                <th>FullName</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>YearsOld</th>
+                <th>Gender</th>
+                <th>ActuallyJobTitle</th>
+                <th>HopeJobTitle</th>
+                <th>YearOfExperience</th>
+                <th>TimelineExperience</th>
+                <th>Degree</th>
+                <th>Locality</th>
+                <th>FullAddress</th>
+                <th>CurrentSalary</th>
+                <th>SalaryExpectationMin</th>
+                <th>SalaryExpectationMax</th>
+                <th>CurrentState</th>
+                <th>Comment</th>
+                <th>Source</th>
+                <th>CurriculumVitae</th>
+                <th>ProfilePhoto</th>
+                <th>FullNameSlugged</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profile in profiles %}
+            <tr>
+                <td>{{ profile.id }}</td>
+                <td>{{ profile.receivedAt ? profile.receivedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ profile.fullName }}</td>
+                <td>{{ profile.email }}</td>
+                <td>{{ profile.phone }}</td>
+                <td>{{ profile.yearsOld }}</td>
+                <td>{{ profile.gender }}</td>
+                <td>{{ profile.actuallyJobTitle }}</td>
+                <td>{{ profile.hopeJobTitle }}</td>
+                <td>{{ profile.yearOfExperience }}</td>
+                <td>{{ profile.timelineExperience }}</td>
+                <td>{{ profile.degree }}</td>
+                <td>{{ profile.locality }}</td>
+                <td>{{ profile.fullAddress }}</td>
+                <td>{{ profile.currentSalary }}</td>
+                <td>{{ profile.salaryExpectationMin }}</td>
+                <td>{{ profile.salaryExpectationMax }}</td>
+                <td>{{ profile.currentState }}</td>
+                <td>{{ profile.comment }}</td>
+                <td>{{ profile.source }}</td>
+                <td>{{ profile.curriculumVitae }}</td>
+                <td>{{ profile.profilePhoto }}</td>
+                <td>{{ profile.fullNameSlugged }}</td>
+                <td>{{ profile.createdAt ? profile.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ profile.updatedAt ? profile.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_profile_show', {'id': profile.id}) }}">show</a>
+                    <a href="{{ path('app_profile_edit', {'id': profile.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="26">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_profile_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% from 'macro/macro_custom_radio_render.html.twig' import custom_radio_render_inline %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <!-- Basic Card Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-6 d-flex align-items-center">
+                        <h5 class="m-0 font-weight-bold text-primary">
+                            {{ is_new ? 'Nouveau' : 'Modifier un' }} contrat
+                            <span class="badge badge-primary" style="font-size: 18px;">#{{ the_id }}</span>
+                        </h5>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-primary float-right" href="{{ path('htcintranet_deal_index') }}">
+                            <i class="fa fa-backward mr-2"></i>
+                            Revenir à la liste des contrats
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{ form_start(form, {'attr': {'id': 'form_deal'}}) }}
+            <div class="card-body">
+                <div class="row">
+                    {% include 'flash_message/index.html.twig' %}
+                    <!--div class="col-lg-5 d-none d-lg-block bg-deal-image"-->
+
+                    <div class="col-5 p-5">
+                        <div class="form-group">
+                            {{ form_label(form.reference) }}
+                            {{ form_widget(form.reference, {'attr' : {'class': 'form-control', 'placeholder': 'Référence'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.jobName) }}
+                            {{ form_widget(form.jobName, {'attr' : {'class': 'form-control', 'placeholder': 'Nom du poste', 'autofocus' : 'true'}}) }}
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Nombre à recruter</span>
+                            {{ form_widget(form.quantity, {'attr' : {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Client</span>
+                            {{ form_widget(form.customer, {'attr' : {'class': 'form-control form-select', 'placeholder': 'Client'}}) }}
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Statut</span>
+                            {{ form_widget(form.status, {'attr' : {'class': 'form-control form-select', 'placeholder': 'Statut'}}) }}
+                        </div>
+                        {% if not is_new and deal.isDeadlineLate %}
+                            <small class="text-danger">
+                                <i class="fa fa-warning"></i>
+                                Attention le deadline a été dépassé alors que le contrat est toujours en cours.
+                            </small>
+                        {% endif %}
+                        <div class="input-group mb-3">
+                            {% set deadline_value = deal.deadline is not empty ? deal.getDeadlineFormatted() : '' %}
+                            <span class="input-group-text">Deadline</span>
+                                {{ form_widget(form.deadline, {'attr' : {'class': 'form-control datepicker', 'placeholder': 'Deadline d\'envoi', 'value' : deadline_value }}) }}
+                                <span class="input-group-text">
+                                <i class="fa fa-clock"></i>
+                            </span>
+                        </div>
+                        <div style="border: 2px solid; border-color: #858796; border-radius: 10px" class="p-4">
+                            <div class="form-group d-flex align-items-center">
+                                {{ custom_radio_render_inline(form.salaryState, 'salary-state', true) }}
+                            </div>
+                            <div class="input-group mb-3 d-none" id="salary-exact">
+                                {{ form_widget(form.salaryExact, {'attr' : {'class': 'form-control', 'placeholder': 'Salaire exact'}}) }}
+                                <span class="input-group-text">Ariary</span>
+                            </div>
+                            <div class="input-group mb-3 d-none" id="salary-variable">
+                                {{ form_widget(form.salaryMin, {'attr' : {'class': 'form-control', 'placeholder': 'Salaire minimum'}}) }}
+                                <span class="input-group-text">Ariary</span>
+                                <span class="input-group-text">à</span>
+                                {{ form_widget(form.salaryMax, {'attr' : {'class': 'form-control', 'placeholder': 'Salaire maximum'}}) }}
+                                <span class="input-group-text">Ariary</span>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            {{ form_label(form.responsibleConsultant) }}
+                            {{ form_widget(form.responsibleConsultant, {'attr' : {'class': 'form-control form-select'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.comment) }}
+                            {{ form_widget(form.comment, {'attr' : {'class': 'form-control', 'placeholder': 'Remarque(s)', 'size': 5}}) }}
+                        </div>
+                    </div>
+                    <div class="col-7 p-5">
+                        <div class="form-group">
+                            {{ form_label(form.jobDescription) }}
+                            {# { form_widget(form.jobDescription, {'attr' : {'class': 'form-control tinymce', 'placeholder': 'Fiche de poste'}}) }#}
+                            {{ form_widget(form.jobDescription, {'attr' : {'class': 'form-control', 'placeholder': 'Fiche de poste'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.dealFile) }}
+                            {{ form_widget(form.dealFile, {'attr' : {'class': 'form-control', 'placeholder': 'Contrat'}}) }}
+                            {{ form_errors(form.dealFile) }}
+                            {% if not is_new and deal.dealFilename %}
+                                <small class="text-gray-700">Fichier : <strong>{{ deal.dealFilename }}</strong></small>
+                            {% endif %}
+                        </div>
+                        {% if not is_new and deal.dealFilename %}
+                            <a href="{{ base_path_deal_file~'/'~deal.dealFilename }}" data-filename="{{ deal.dealFilename }}" id="download-deal" class="btn btn-secondary">
+                                <i class="fa fa-download"></i>
+                                Télécharger
+                            </a>
+                            <a href="#" class="js-show-deal-file btn btn-warning" title="Aperçu du contrat"
+                               data-bs-toggle="modal" data-bs-target="#modal-deal-file" style="color: darkred;">
+                                <i class="fa fa-eye"></i>
+                                Voir
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                    <div class="col-2">
+                        <a class="btn btn-secondary float-right" href="{{ path('htcintranet_deal_index') }}">
+                            <i class="fa fa-backward mr-2"></i>
+                            Liste des contrats
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-primary btn-user btn-block">
+                            <i class="fa fa-save mr-2"></i>
+                            {{ is_new ? 'Créer' : 'Modifier' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {{ form_widget(form._token) }}
+            {{ form_end(form, {render_rest: false}) }}
+        </div>
+    </div>
+</div>
+
+{% if not is_new and deal.dealFilename and is_viewable_file %}
+    {% include 'deal/modal_deal_view_file.html.twig' %}
+{% endif %}

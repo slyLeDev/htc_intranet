@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HTC Intranet | Connexion{% endblock %}
+
+{% block body %}
+    <section class="vh-100">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="{{ asset('build/image/draw2.webp') }}"
+                         class="img-fluid" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <form method="post">
+                        <div class="d-flex flex-row align-items-center justify-content-center">
+                            <img src="{{ asset('build/image/logo_htc.png') }}" alt="Logo HTC">
+                        </div>
+                        <div class="d-flex flex-row align-items-center justify-content-center mt-3">
+                            <p class="lead fw-normal mb-0 me-3">Bienvenue sur l'interface de connexion à l'intranet de HTC</p>
+                        </div>
+
+                        <div class="divider d-flex align-items-center my-4">
+                            <p class="text-center fw-bold mx-3 mb-0">Se connecter</p>
+                        </div>
+
+                        {% include 'flash_message/index.html.twig' %}
+
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+                        {% if app.user %}
+                            <div class="mb-3">
+                                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('htcintranet_logout') }}">Se déconnecter</a>
+                            </div>
+                        {% endif %}
+
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="inputEmail">Adresse email</label>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" placeholder="Saisissez votre adresse email" required autofocus>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="inputPassword">Mot de passe</label>
+                            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Saisissez votre mot de passe">
+                        </div>
+
+                        <input type="hidden" name="_csrf_token"
+                               value="{{ csrf_token('authenticate') }}"
+                        >
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Checkbox -->
+                            <div class="form-check mb-0">
+                                <input class="form-check-input me-2" type="checkbox" name="_remember_me" id="inputRememberMe"/>
+                                <label class="form-check-label" for="inputRememberMe">
+                                    Se souvenir de moi
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg"
+                                    style="padding-left: 2.5rem; padding-right: 2.5rem;">Connexion
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% include 'security/footer.html.twig' %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}{{ encore_entry_script_tags('login') }}{% endblock %}

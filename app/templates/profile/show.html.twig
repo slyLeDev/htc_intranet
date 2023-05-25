@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+    <h1>Profile</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ profile.id }}</td>
+            </tr>
+            <tr>
+                <th>ReceivedAt</th>
+                <td>{{ profile.receivedAt ? profile.receivedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>FullName</th>
+                <td>{{ profile.fullName }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ profile.email }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ profile.phone }}</td>
+            </tr>
+            <tr>
+                <th>YearsOld</th>
+                <td>{{ profile.yearsOld }}</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>{{ profile.gender }}</td>
+            </tr>
+            <tr>
+                <th>ActuallyJobTitle</th>
+                <td>{{ profile.actuallyJobTitle }}</td>
+            </tr>
+            <tr>
+                <th>HopeJobTitle</th>
+                <td>{{ profile.hopeJobTitle }}</td>
+            </tr>
+            <tr>
+                <th>YearOfExperience</th>
+                <td>{{ profile.yearOfExperience }}</td>
+            </tr>
+            <tr>
+                <th>TimelineExperience</th>
+                <td>{{ profile.timelineExperience }}</td>
+            </tr>
+            <tr>
+                <th>Degree</th>
+                <td>{{ profile.degree }}</td>
+            </tr>
+            <tr>
+                <th>Locality</th>
+                <td>{{ profile.locality }}</td>
+            </tr>
+            <tr>
+                <th>FullAddress</th>
+                <td>{{ profile.fullAddress }}</td>
+            </tr>
+            <tr>
+                <th>CurrentSalary</th>
+                <td>{{ profile.currentSalary }}</td>
+            </tr>
+            <tr>
+                <th>SalaryExpectationMin</th>
+                <td>{{ profile.salaryExpectationMin }}</td>
+            </tr>
+            <tr>
+                <th>SalaryExpectationMax</th>
+                <td>{{ profile.salaryExpectationMax }}</td>
+            </tr>
+            <tr>
+                <th>CurrentState</th>
+                <td>{{ profile.currentState }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ profile.comment }}</td>
+            </tr>
+            <tr>
+                <th>Source</th>
+                <td>{{ profile.source }}</td>
+            </tr>
+            <tr>
+                <th>CurriculumVitae</th>
+                <td>{{ profile.curriculumVitae }}</td>
+            </tr>
+            <tr>
+                <th>ProfilePhoto</th>
+                <td>{{ profile.profilePhoto }}</td>
+            </tr>
+            <tr>
+                <th>FullNameSlugged</th>
+                <td>{{ profile.fullNameSlugged }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ profile.createdAt ? profile.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ profile.updatedAt ? profile.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_profile_index') }}">back to list</a>
+
+    <a href="{{ path('app_profile_edit', {'id': profile.id}) }}">edit</a>
+
+    {{ include('profile/_delete_form.html.twig') }}
+{% endblock %}

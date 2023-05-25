@@ -1,0 +1,52 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}HTC Intranet | Gestion des catégories d'entretien{% endblock %}
+
+{% block inner_content %}
+    <!-- Page Heading -->
+
+    {% include 'flash_message/index.html.twig' %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h5 class="m-0 font-weight-bold text-primary">Calendrier des entretiens</h5>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-primary float-right ml-3" id="js-btn-create-event" >
+                                <i class="fa fa-plus mr-2"></i>
+                                Planifier un entretien
+                            </button>
+                            <div class="align-items-end float-right">
+                                <div class="input-group">
+                                    <label class="input-group-text" for="inputGroupSelect01">Filtrer :</label>
+                                    <select class="form-select" id="inputGroupSelect01">
+                                        <option selected>Tous</option>
+                                        {% for user in user_consultant %}
+                                            <option value="{{ user.id }}">{{ user.fullName }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div {{ react_component('CalendarInterview') }}>
+                        Chargement... <i class="fas fa-cog fa-spin fa-3x" style="font-size: 20px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'interview/modal_edit_event_form.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('generic') }}
+{% endblock %}

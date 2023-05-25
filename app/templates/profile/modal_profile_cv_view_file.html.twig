@@ -1,0 +1,17 @@
+<div class="modal fade" id="modal-profile-cv-file" tabindex="-1" aria-labelledby="modalDealFileLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold text-primary">Aperçu du CV</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center" id="js-profile-cv-file-body">
+                <iframe src="{{ base_path_profile_cv_viewerjs ~ viewable_filename }}" width='1024' height='600' allowfullscreen webkitallowfullscreen></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary js-btn-close" data-bs-dismiss="modal">Fermer</button>
+                <!--button type="button" class="btn btn-primary js-btn-confirm">Confirmer</button-->
+            </div>
+        </div>
+    </div>
+</div>

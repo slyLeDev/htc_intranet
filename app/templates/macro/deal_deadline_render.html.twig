@@ -1,0 +1,14 @@
+{% macro deal_deadline_render(deal) %}
+    {% set deadline_badge = 'badge badge-success' %}
+    {% if not deal.isPending() %}
+        {% set deadline_badge = 'badge badge-info' %}
+    {% elseif deal.isPending() and deal.isDeadlineLate() %}
+        <i class="fa fa-hand-point-down mr-2" style="color: red;"></i>
+        {% set deadline_badge = 'badge badge-danger' %}
+    {% elseif deal.isPending() and not deal.isDeadlineLate() %}
+        <i class="fa fa-hand-point-up mr-2" style="color: green;"></i>
+    {% endif %}
+    <span class="{{ deadline_badge }}">
+        {{ deal.deadline ? deal.deadline|date('d/m/Y') ~ (deal.isDeadlineLate() ? ' (en retard)' : '') : '' }}
+    </span>
+{% endmacro %}

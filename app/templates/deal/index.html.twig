@@ -1,0 +1,110 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}HTC Intranet | Contrats clients{% endblock %}
+
+{% from 'macro/deal_deadline_render.html.twig' import deal_deadline_render %}
+
+{% block inner_content %}
+    <!-- Page Heading -->
+
+    {% include 'flash_message/index.html.twig' %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h5 class="m-0 font-weight-bold text-primary">Liste des contrats clients</h5>
+                        </div>
+                        <div class="col-6">
+                            <a class="btn btn-primary float-right" href="{{ path('htcintranet_deal_manage') }}">
+                                <i class="fa fa-plus mr-2"></i>
+                                Créer un nouveau contrat
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered tab-htc" id="dataTable">
+                            <thead class="bg-primary text-white">
+                            <tr>
+                                <th>#REF</th>
+                                <th>Poste</th>
+                                <th>Client</th>
+                                <th>Salaire</th>
+                                <th>Lot envoyé</th>
+                                <th>Deadline</th>
+                                <th style="width: 15% !important;">Responsable(s)</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for deal in deals %}
+                                <tr>
+                                    <td>
+                                        <small class="badge badge-secondary">
+                                            <strong>#{{ deal.getReference() }}</strong>
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <strong>({{ deal.getQuantityAsString() }})</strong>
+                                        {{ deal.jobName }}
+                                    </td>
+                                    <td>
+                                        <img class="img-profile rounded-circle ml-2 mr-3" width="30px" height="30px"
+                                             src="{{ deal.customer.logo ?
+                                             asset('uploads/customer_logo/'~deal.customer.logo) :
+                                             'https://ui-avatars.com/api/?rounded=true&background=random&name='~deal.customer.name|replace({' ' : '+'}) }}" alt="Logo">
+                                        {{ deal.customer.name }}
+                                    </td>
+                                    <td>
+                                        {{ deal.getSalaryText() }}
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-secondary">
+                                            0 (todo)
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{ deal_deadline_render(deal) }}
+                                    </td>
+                                    <td>
+                                        <small>{{ deal.getConsultantResponsibleAsString() }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="{{ deal.getStatutBadgeLabel() }}">
+                                            {{ deal.getStatutText() }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <a href="" class="js-show-deal-sheet ml-2" title="Voir la fiche" data-id="{{ deal.id }}"
+                                           data-bs-toggle="modal" data-bs-target="#modal-deal-sheet" style="color: darkred;">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a href="" class="js-show-deal-batch ml-2 mt-1" title="Créer un lot" data-id="{{ deal.id }}"
+                                           data-bs-toggle="modal" data-bs-target="#modal-deal-batch" style="color: green;">
+                                            <i class="fa fa-add"></i>
+                                        </a>
+                                        <a href="{{ path('htcintranet_deal_manage', {'id': deal.id}) }}" class="ml-3" title="Modifier">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'deal/modal_deal_sheet.html.twig' %}
+    {% include 'deal/modal_deal_batch.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}{{ encore_entry_script_tags('deal') }}{% endblock %}

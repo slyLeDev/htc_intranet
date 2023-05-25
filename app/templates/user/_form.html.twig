@@ -1,0 +1,49 @@
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+            <div class="col-lg-7">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Créer un consultant</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem eveniet illum quia quidem? Dignissimos eveniet excepturi exercitationem id ipsam ipsum nihil, pariatur placeat possimus, quasi quibusdam, quidem recusandae similique veritatis?
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta dignissimos eius enim error et impedit maxime nam natus, odio officia porro, reprehenderit sit tempore, temporibus voluptatum! Eius illo similique sunt!
+                        </p>
+                    </div>
+
+                    {% include 'flash_message/index.html.twig' %}
+
+                    {{ form_start(form, {'attr': {'id': 'form_user'}}) }}
+                        <div class="form-group">
+                            {{ form_widget(form.fullName, {'attr' : {'class': 'form-control forme-control-user', 'placeholder': 'Nom complet', 'autofocus' : 'true'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_widget(form.email, {'attr' : {'class': 'form-control forme-control-user', 'placeholder': 'Email', 'autocomplete': 'off'}}) }}
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                {{ form_widget(form.password, {'attr' : {'class': 'form-control forme-control-user', 'placeholder': 'Mot de passe'}}) }}
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control form-control-user"
+                                       id="verifpass" required placeholder="Répeter le mot de passe">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-user btn-block">
+                            {{ button_label|default('Enregistrer') }}
+                        </button>
+                    {{ form_end(form) }}
+                    <hr>
+                    <div class="text-center">
+                        <a class="small" href="{{ path('htcintranet_user_index') }}">
+                            <i class="fa fa-backward mr-2"></i>
+                            Revenir à la liste des consultants
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

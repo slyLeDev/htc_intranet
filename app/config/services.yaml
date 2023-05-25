@@ -1,0 +1,54 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    # su user
+    user_superadmin_fullname: '%env(USER_SU_FULLNAME)%'
+    user_superadmin_email: '%env(USER_SU_EMAIL)%'
+    user_superadmin_pwd: '%env(USER_SU_PWD)%'
+
+    # customer
+    customer_logo_directory: '%kernel.project_dir%/public/uploads/customer_logo'
+
+    # deal
+    deal_file_directory: '%kernel.project_dir%/public/uploads/deal_file'
+
+    # files
+    data_injector_base_files_path: '%kernel.project_dir%/src/DataInjector/Files/'
+    # fake files
+    fake_file_directory: '%kernel.project_dir%/src/DataFixtures/fake_files'
+    file_profile_received_path: '%data_injector_base_files_path%profile_received.csv'
+    file_profile_interviewed_path: '%data_injector_base_files_path%profile_interviewed.xlsx'
+    filelog_profile_interviewed_path: '%data_injector_base_files_path%log_profile_interviewed.csv'
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    App\Service\CustomerFileUploader:
+        arguments:
+            $targetDirectory: '%customer_logo_directory%'
+
+    App\Service\DealFileUploader:
+        arguments:
+            $targetDirectory: '%deal_file_directory%'
+
+    App\Listener\UserActivityListener:
+        arguments: ["@security.token_storage", "@doctrine.orm.default_entity_manager"]
+        tags:
+            - {name: kernel.event_listener, event: kernel.controller, method: onCoreController}

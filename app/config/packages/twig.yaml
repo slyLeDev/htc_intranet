@@ -1,0 +1,11 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    globals:
+        base_path_profile_file: '/uploads/profile_file'
+        base_path_deal_file: '/uploads/deal_file'
+        base_path_profile_cv_viewerjs: '/js/ViewerJS/#../../uploads/profile_file/'
+        base_path_deal_viewerjs: '/js/ViewerJS/#../../uploads/deal_file/'
+
+when@test:
+    twig:
+        strict_variables: true

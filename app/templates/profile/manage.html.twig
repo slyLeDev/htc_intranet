@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}HTC Intranet | Profile candidat{% endblock %}
+
+{% block tinymce_script %}
+    <script src="{{ asset('build/js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
+{% endblock %}
+
+{% block inner_content %}
+    {% include 'profile/_form.html.twig' with {'is_new': is_new} %}
+{% endblock %}
+
+{% block javascripts %}{{ encore_entry_script_tags('profile') }}{% endblock %}
+

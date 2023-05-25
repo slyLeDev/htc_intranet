@@ -1,0 +1,45 @@
+<div class="p-2">
+    {% include 'flash_message/index.html.twig' %}
+
+    {{ form_start(form, {'attr': {'id': 'form_job_sector'}}) }}
+    <div class="form-group">
+        {% if not is_new %}
+            <h6>Vous êtes en train de modifier le secteur d'emploi suivant : </h6>
+            <hr>
+        {% endif %}
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-2">
+                <span class="badge badge-primary" style="font-size: 18px;">
+                    #{{ the_id }}
+                </span>
+            </div>
+            <div class="col-10">
+                {{ form_widget(form.name, {'attr' : {'class': 'form-control', 'placeholder': 'Secteur d\'emploi', 'autofocus' : 'true'}}) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% if is_new %}
+            <div class="col-12">
+                <button class="btn btn-primary btn-user btn-block">
+                    <i class="fa fa-save mr-2"></i>
+                    {{ is_new ? 'Créer' : 'Modifier' }}
+                </button>
+            </div>
+        {% else %}
+            <div class="col-6">
+                <a href="{{ path('htcintranet_job_sector_index') }}" class="btn btn-secondary btn-user btn-block">
+                    <i class="fa fa-backward mr-2"></i>
+                    Retour à la liste
+                </a>
+            </div>
+            <div class="col-6">
+                <button class="btn btn-primary btn-user btn-block">
+                    <i class="fa fa-save mr-2"></i>
+                    {{ is_new ? 'Créer' : 'Modifier' }}
+                </button>
+            </div>
+        {% endif %}
+    </div>
+    {{ form_end(form) }}
+</div>
